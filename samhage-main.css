@@ -1,3 +1,7 @@
+body {
+	margin: 0;
+}
+
 a {
 	text-decoration: none;
 	color: #000;
@@ -16,12 +20,7 @@ a:hover {
 	margin: 1em;
 }
 
-#name {
-	/*margin-bottom: 0;*/
-}
-
-#address {
-	/*font-family: garamond;*/
+.address {
 	display: block;
 }
 
@@ -32,3 +31,20 @@ a:hover {
 .divider {
 	display: block;
 }
+
+.midd-sunset {
+	margin: 2em 0 2em 0;
+	overflow: hidden;
+	max-height: 350px;
+}
+
+img {
+	width: 100%;
+	display: block;
+}
+
+
+
+
+
+
