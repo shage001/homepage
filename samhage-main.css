@@ -36,11 +36,19 @@ a:hover {
 	margin: 2em 0 2em 0;
 	overflow: hidden;
 	max-height: 350px;
+	text-align: center;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 
 img {
 	width: 100%;
-	display: block;
+	/*display: block;*/
+	vertical-align: middle;
 }
 
 
