@@ -1,5 +1,6 @@
 body {
 	margin: 0;
+	font-family: vollkorn;
 }
 
 a {
@@ -16,7 +17,6 @@ a:hover {
 }
 
 .header {
-	font-family: vollkorn;
 	margin: 1em;
 }
 
