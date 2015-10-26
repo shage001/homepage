@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lan="en">
+
+	<head>
+		<title>Terrain</title>
+		<script type="text/javascript" src="../lib/webgl-utils.js"></script>
+		<script type="text/javascript" src="../lib/MV.js"></script>
+		<script type="text/javascript" src="../lib/InitShaders.js"></script>
+		
+		
+		<script type="text/javascript" src="shage_proj6.js"></script>
+		
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+
+			attribute vec4 a_Position;
+			attribute vec3 a_Normal;
+
+			uniform vec4 u_LightAt;
+			// uniform vec4 u_LightPosition;
+			uniform mat4 u_Projection;
+			uniform mat4 u_ViewMatrix;
+			uniform mat4 u_ModelMatrix;
+
+			varying float v_Height;
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_LightPosition;
+			varying vec3 v_LightDirection;
+			varying vec4 v_ViewSpace;
+		
+			void main() {
+				gl_Position = u_Projection*u_ViewMatrix*u_ModelMatrix*a_Position;
+				v_Height = a_Position[1];
+				v_LightPosition = (u_ViewMatrix*vec4(0.0, 2.0, 2.0, 1.0)).xyz;
+				v_LightDirection = (u_ViewMatrix*vec4(u_LightAt.x-0.0, u_LightAt.y-2.0, u_LightAt.z-2.0, 0.0)).xyz;
+				v_Position = (u_ViewMatrix*u_ModelMatrix*a_Position).xyz;
+				v_Normal = mat3(u_ViewMatrix*u_ModelMatrix)*a_Normal;
+				// ViewSpace will be used for the fog calculations
+				v_ViewSpace = u_ViewMatrix * u_ModelMatrix * a_Position;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying float v_Height;
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_LightDirection;
+			varying vec3 v_Color;
+			varying vec4 v_ViewSpace;
+			vec3 color;
+
+			vec3 L, N, V, H, P;
+			vec3 ambient, diffuse, specular;
+			// fog information
+			vec3 fogColor;
+			vec3 lightColor;
+			vec3 finalColor;
+			float dist;
+			float fogFactor;
+			float start;
+			float end;
+
+			uniform vec3 u_Ambient;
+			uniform vec3 u_Diffuse;
+			uniform vec3 u_Specular;
+			uniform float u_Shininess;
+
+			void main() {
+
+				if (v_Height <= 0.201) { // couldn't be exactly 0.2 because of rounding
+					color = vec3(0.2, 0.2, 0.8); // make water blue
+				} else {
+					color = vec3(0.2, 0.2, 0.0); // make mountains green-brown
+				}
+
+				// compute fog information
+				start = 0.5;
+				end = 5.0;
+				vec3 fogColor = vec3(0.5, 0.8, 0.9);
+				dist = abs(v_ViewSpace.z);
+				fogFactor = (end - dist)/(end - start);
+				fogFactor = clamp(fogFactor, 0.0, 1.0);
+
+				vec3 light_ambient = u_Ambient;
+				vec3 light_diffuse = u_Diffuse;
+				vec3 light_specular = u_Specular;
+				float shininess = u_Shininess;
+				
+				P = v_Position;
+				N = normalize(v_Normal);
+				L = normalize(v_LightDirection);
+				V = normalize( -P);
+				H = normalize(L+V);
+				
+				ambient = color * light_ambient;
+				diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+				specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+
+				lightColor = ambient + diffuse + specular;
+				// mix fog and normal lighting information
+				finalColor = mix(fogColor, lightColor, fogFactor);
+				gl_FragColor = vec4(finalColor, 1.0);
+			}
+		</script>
+		
+	</head>
+	<body>
+		<canvas id="gl-canvas" width="640" height="640">
+			You need a better web browser
+		</canvas>
+
+		<p id="alt" style="color:#69BC44; font-family:Lucida Console; position:absolute; left:95px; top:210px; font-size:20px"></p>
+		<p>
+			Arrow keys (+Shift) to move. WASD (+Shift) to angle camera.
+		</p>	
+		<img src="cockpit.png" alt="cockpit" style="width:640px; position:absolute; left:8px; top:55px">
+	</body>
+</html>

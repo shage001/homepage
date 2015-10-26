@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lan="en">
+
+	<head>
+		<title>Maze Runner</title>
+		<script type="text/javascript" src="../lib/webgl-utils.js"></script>
+		<script type="text/javascript" src="../lib/MV.js"></script>
+		<script type="text/javascript" src="../lib/InitShaders.js"></script>
+		
+		
+		<script type="text/javascript" src="shage_proj7.js"></script>
+		
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+
+			attribute vec4 a_Position;
+			attribute vec3 a_Normal;
+			attribute vec2 a_TexCoord;
+
+			uniform mat4 u_Projection;
+			uniform mat4 u_ViewMatrix;
+			uniform mat4 u_ModelMatrix;
+		
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_LightNormal;
+			varying vec3 v_LightPosition;
+			varying vec3 v_LightDirection;
+			varying vec2 v_TexCoord;
+
+			void main() {
+				gl_Position = u_Projection*u_ViewMatrix* u_ModelMatrix*a_Position;
+				gl_PointSize = 4.0;
+				v_Position = (u_ViewMatrix*u_ModelMatrix*a_Position).xyz;
+				v_LightPosition = vec3(0.0, 0.0, 0.0);
+				vec3 lightAt = vec3(0.0, 0.2, 1.0);
+				v_LightDirection = lightAt-v_LightPosition;
+				v_TexCoord = a_TexCoord;
+				v_Normal = a_Normal;
+				v_LightNormal = (u_ViewMatrix*vec4(a_Normal, 1.0)).xyz;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_LightNormal;
+			varying vec3 v_LightPosition;
+			varying vec3 v_LightDirection;
+			varying vec2 v_TexCoord;
+
+			vec3 color;
+			vec3 L, N, V, H, P;
+			vec3 ambient, diffuse, lightToPoint;
+			float theta, curAngle, a, b, d;
+
+			uniform sampler2D u_FloorSampler;
+			uniform sampler2D u_WallSampler;
+			uniform sampler2D u_CeilingSampler;
+
+			uniform vec3 u_Ambient;
+			uniform vec3 u_Diffuse;
+
+			void main() {
+
+				vec3 light_ambient = u_Ambient;
+				vec3 light_diffuse = u_Diffuse;
+
+				P = v_Position;
+				lightToPoint = P - v_LightPosition;
+				a = 1.0;
+				b = 10.0;
+				d = lightToPoint[0]*lightToPoint[0] +
+					lightToPoint[1]*lightToPoint[1] +
+					lightToPoint[2]*lightToPoint[2];
+				lightToPoint = normalize(lightToPoint);
+				N = normalize(v_LightNormal);
+				L = normalize(v_LightDirection);
+				curAngle = degrees(acos(dot(L, -lightToPoint)));
+				theta = 30.0;
+				V = normalize( -P);
+				H = normalize(L+V);
+
+
+				if (v_Normal[1] > 0.0 && v_Normal[2] > 0.0) {
+					color = abs(v_Normal);	
+				} else if (v_Normal[1] > 0.0) {
+					color = vec3(texture2D(u_FloorSampler, v_TexCoord));
+				} else if (v_Normal[1] < 0.0) {
+					color = vec3(texture2D(u_CeilingSampler, v_TexCoord));
+				} else if (v_Normal[1] == 0.0) {
+					color = vec3(texture2D(u_WallSampler, v_TexCoord));
+				}
+
+				ambient = color * light_ambient;
+				float scale = max(0.0, theta-curAngle)/5.0;
+				diffuse = scale*(color * max(dot(L, N), 0.0) * (light_diffuse/(a+b*d+d*d)));
+
+				gl_FragColor = vec4(ambient + diffuse , 1.0);
+			}
+		</script>
+		
+		
+		
+	</head>
+	<body bgcolor="#000000">
+		
+		<center>
+
+		<h1 style="color:white">
+			Maze Runner
+		</h1>
+
+		<canvas id="gl-canvas" width="1000" height="500" style="margin-top:10px">
+			You need a better web browser
+		</canvas>
+
+		<p style="color:white">
+			WASD to move. Shift to run. Arrow keys to control the camera.
+		</p>
+		<p style="color:white">
+			Look out for blue tiles!
+		</p>
+		</center>
+		
+		
+	</body>
+</html>

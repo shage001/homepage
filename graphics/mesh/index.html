@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lan="en">
+
+	<head>
+		<title>Mesh</title>
+		<script type="text/javascript" src="../lib/webgl-utils.js"></script>
+		<script type="text/javascript" src="../lib/MV.js"></script>
+		<script type="text/javascript" src="../lib/InitShaders.js"></script>
+		
+		
+		<script type="text/javascript" src="shage_proj5.js"></script>
+		
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 a_Position;
+			varying float v_Height;
+			uniform mat4 u_Projection;
+			uniform mat4 u_ViewMatrix;
+			uniform mat4 u_ModelMatrix;
+		
+			varying vec4 v_Position;
+			void main() {
+				gl_Position = u_Projection*u_ViewMatrix* u_ModelMatrix*a_Position;
+				gl_PointSize = 4.0;
+				v_Position = a_Position;
+				v_Height = a_Position[1];
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+			varying vec4 v_Position;
+			uniform int u_Grid;
+			varying float v_Height;
+			void main() {
+				if (u_Grid == 0) {
+					gl_FragColor = vec4(1.0 - v_Height*10.0, 0.0, v_Height*10.0, 1.0);
+				} else {
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				}
+			}
+		</script>
+		
+		
+		
+	</head>
+	<body>
+		<canvas id="gl-canvas" width="640" height="640">
+			You need a better web browser
+		</canvas>
+		
+		<h1>The Mesh</h1>
+
+		<p>Use the arrow keys to control the camera. Z and X to zoom.</p>
+		
+		<p>Number of rows: <input type="range" id="rowSlider" min="4" max="80" value="50" /> <input type="text" id="rowDisplay" value="50" /></p>
+		<p>Number of columns: <input type="range" id="colSlider" min="4" max="80" value="50" /> <input type="text" id="colDisplay" value="50" /></p>
+		<p>Render type: <select id="renderMenu" name="render" >
+			<option value="full">Full</option>
+			<option value="skin">Skin</option>
+			<option value="grid">Grid</option>
+			<option value="point">Point</option>
+			
+		</select>
+		</p>
+		<p>Function: <select id="functionsMenu" name="functions" >
+			<option value="function1">Function 1</option>
+			<option value="function2">Function 2</option>
+			<option value="function3">Function 3</option>
+			<option value="function4">Function 4</option>
+			
+		</select>
+		</p>
+		
+	</body>
+</html>

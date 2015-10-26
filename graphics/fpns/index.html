@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lan="en">
+
+	<head>
+		<title>Final</title>
+		<script type="text/javascript" src="../lib/webgl-utils.js"></script>
+		<script type="text/javascript" src="../lib/MV.js"></script>
+		<script type="text/javascript" src="../lib/InitShaders.js"></script>
+		
+		
+		<script type="text/javascript" src="final.js"></script>
+		
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+
+			attribute vec4 a_Position;
+			attribute vec3 a_Normal;
+			attribute vec2 a_TexCoord;
+
+			uniform vec4 u_LightAt;
+			uniform mat4 u_Projection;
+			uniform mat4 u_ViewMatrix;
+			uniform mat4 u_ModelMatrix;
+
+			uniform int u_Sky;
+
+			varying float v_Height;
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_TexNormal;
+			varying vec3 v_LightPosition;
+			varying vec3 v_LightDirection;
+			varying vec4 v_ViewSpace;
+			varying vec2 v_TexCoord;
+
+			vec4 tempPosition;
+		
+			void main() {
+
+				if (u_Sky == 1) {
+					tempPosition = u_Projection*u_ViewMatrix*a_Position;
+				} else {
+					tempPosition = u_Projection*u_ViewMatrix*u_ModelMatrix*a_Position;
+				}
+				gl_Position = tempPosition;
+				v_Height = a_Position[1];
+				v_LightPosition = (u_ViewMatrix*vec4(0.0, 2.0, 2.0, 1.0)).xyz;
+				v_LightDirection = (u_ViewMatrix*vec4(u_LightAt.x-0.0, u_LightAt.y-2.0, u_LightAt.z-2.0, 0.0)).xyz;
+				v_Position = (u_ViewMatrix*u_ModelMatrix*a_Position).xyz;
+				v_Normal = mat3(u_ViewMatrix*u_ModelMatrix)*a_Normal;
+				v_TexNormal = a_Normal;
+				// ViewSpace will be used for the fog calculations
+				v_ViewSpace = u_ViewMatrix * u_ModelMatrix * a_Position;
+				v_TexCoord = a_TexCoord;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+
+			varying float v_Height;
+			varying vec3 v_Position;
+			varying vec3 v_Normal;
+			varying vec3 v_TexNormal;
+			varying vec3 v_LightDirection;
+			varying vec3 v_Color;
+			varying vec4 v_ViewSpace;
+			varying vec2 v_TexCoord;
+
+			vec3 color;
+			vec3 L, N, V, H, P;
+			vec3 ambient, diffuse, specular;
+			// fog information
+			vec3 fogColor;
+			vec3 lightColor;
+			vec3 finalColor;
+			float dist;
+			float fogFactor;
+			float start;
+			float end;
+
+			uniform vec3 u_Ambient;
+			uniform vec3 u_Diffuse;
+			uniform vec3 u_Specular;
+			uniform float u_Shininess;
+			uniform int u_Face;
+			uniform int u_Sphere;
+
+			uniform sampler2D u_BkSampler;
+			uniform sampler2D u_FtSampler;
+			uniform sampler2D u_LfSampler;
+			uniform sampler2D u_RtSampler;
+			uniform sampler2D u_UpSampler;
+			uniform sampler2D u_SphereSampler;
+
+			void main() {
+
+				// compute fog information
+				start = 0.005;
+				end = 1.0;
+				vec3 fogColor = vec3(0.9, 0.47, 0.32);
+				dist = abs(v_ViewSpace.z);
+				fogFactor = (end - dist)/(end - start);
+				fogFactor = clamp(fogFactor, 0.0, 1.0);
+
+				vec3 light_ambient = u_Ambient;
+				vec3 light_diffuse = u_Diffuse;
+				vec3 light_specular = u_Specular;
+				float shininess = u_Shininess;
+				
+				P = v_Position;
+				N = normalize(v_Normal);
+				L = normalize(v_LightDirection);
+				V = normalize( -P);
+				H = normalize(L+V);
+
+				if (u_Sphere == 3) {
+
+					color = vec3(0.2, 0.2, 0.2);
+
+					ambient = color * light_ambient;
+					diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+					specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+					lightColor = ambient + diffuse + specular;
+					// mix fog and normal lighting information
+					finalColor = mix(fogColor, lightColor, fogFactor);
+				} else if (u_Sphere == 1) {
+
+					color = vec3(0.8, 0.2, 0.2);
+
+					ambient = color * light_ambient;
+					diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+					specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+					lightColor = ambient + diffuse + specular;
+					// mix fog and normal lighting information
+					finalColor = mix(fogColor, lightColor, fogFactor);
+				} else if (u_Sphere == 2) {
+
+					color = vec3(0.2, 0.8, 0.2);
+
+					ambient = color * light_ambient;
+					diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+					specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+					lightColor = ambient + diffuse + specular;
+					// mix fog and normal lighting information
+					finalColor = mix(fogColor, lightColor, fogFactor);
+				}
+
+				// make skybox textured
+				else if (u_Face == 0) {
+					color = vec3(texture2D(u_BkSampler, v_TexCoord));
+					finalColor = color;
+				} 
+				else if (u_Face == 1) {
+					color = vec3(texture2D(u_FtSampler, v_TexCoord));
+					finalColor = color;
+				}
+				else if (u_Face == 2) {
+					color = vec3(texture2D(u_LfSampler, v_TexCoord));
+					finalColor = color;
+				}
+				else if (u_Face == 3) {
+					color = vec3(texture2D(u_RtSampler, v_TexCoord));
+					finalColor = color;
+				}
+				else if (u_Face == 4) {
+					color = vec3(texture2D(u_UpSampler, v_TexCoord));
+					finalColor = color;
+				}
+				// make water blue
+				else if (v_Height <= 0.2001) { // couldn't be exactly 0.2 because of rounding
+					color = vec3(0.2, 0.2, 0.8);
+					// color = vec3(texture2D(u_UpSampler, v_TexCoord));
+
+					ambient = color * light_ambient;
+					diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+					specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+
+					lightColor = ambient + diffuse + specular;
+					// mix fog and normal lighting information
+					finalColor = mix(fogColor, lightColor, fogFactor);
+				}
+				// make mountains green-brown
+				else {
+					color = vec3(0.2, 0.2, 0.0); 
+
+					ambient = color * light_ambient;
+					diffuse = color * max(dot(L, N), 0.0)* light_diffuse;
+					specular = max(color * pow(max(dot(N, H), 0.0), shininess) * light_specular, 0.0);
+
+					lightColor = ambient + diffuse + specular;
+					// mix fog and normal lighting information
+					finalColor = mix(fogColor, lightColor, fogFactor);
+				}
+
+				gl_FragColor = vec4(finalColor, 1.0);
+			}
+		</script>
+		
+	</head>
+	<body bgcolor="#000000">
+
+		<center>
+
+		<h1 style="color:white">
+			Elder Scrolls VI: Middlebury
+		</h1>
+
+		<canvas id="gl-canvas" width="1000" height="500" style="margin-top:10px">
+			You need a better web browser
+		</canvas>
+
+		<p id="health"style="color:#FF0000;font-family:Lucida Console;position:absolute;left:230px;top:500px;font-size:20px"></p>
+		<p id="stamina"style="color:#69BC44;font-family:Lucida Console;position:absolute;left:230px;top:540px;font-size:20px"></p>
+
+		<img id="hearts_red" src="health_10.png" alt="health" style="height:46px; position:absolute; left:330px; top:505px">
+		<img id="hearts_green" src="stamina_10.png" alt="stamina" style="height:46px; position:absolute; left:330px; top:545px">
+
+
+		<p style="color:white">
+			WASD (+Shift) to move. Arrow keys to angle camera.
+		</p>
+		<p style="color:white">
+			Collect red spheres for health, green for stamina!
+		</p>
+
+		</center>
+	</body>
+</html>

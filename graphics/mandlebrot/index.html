@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Mandelbrot</title>
+    <script type="text/javascript" src="../lib/webgl-utils.js"></script>
+	<script type="text/javascript" src="../lib/MV.js"></script>
+	<script type="text/javascript" src="../lib/InitShaders.js"></script>
+
+    <script type="text/javascript" src="shage_mandelbrot.js"></script>
+	
+	
+	
+	<script id="vertex-shader" type="x-shader/x-vertex">
+			// uniform float u_PointSize;
+			uniform vec2 u_Center;
+			uniform float u_Scale;
+			attribute vec4 a_Position;
+			attribute vec4 a_Color;
+			varying vec4 v_Color;
+			varying vec4 v_Position;
+			void main() {
+				gl_Position = a_Position;
+				v_Position[0] = (a_Position[0] + u_Center[0]) * u_Scale;		
+				v_Position[1] = (a_Position[1] + u_Center[1]) * u_Scale;
+				v_Color = a_Color;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision highp float;
+			varying vec4 v_Color;
+			varying vec4 v_Position;
+			void main() {
+				
+				float dx, dy, tmp; // temporary variables
+				float cx = v_Position[0];
+				float cy = v_Position[1];
+				int n = 10000; // maximum iterations
+				dx = cx; // real part of our number
+				dy = cy; // imaginary part of the number
+				bool bored = false;
+
+				// while (dx * dx + dy*dy  < 4.0 and not bored) {
+				int j;
+				for (int i = 0; i < 10000; i++) {
+
+					j = i;
+					// bored = true;
+					tmp = dx;
+					dx = dx * dx - dy*dy+cx;
+					dy = 2.0 * tmp * dy + cy;
+
+					if(dx*dx + dy*dy >= 4.0) {
+						// bored = false;
+						break;
+					}
+				}
+
+				if (j == 9999) {
+					gl_FragColor = v_Color;
+				} else {
+					gl_FragColor = vec4(float(j)/30.0, float(j)/300.0, 0.0, 1.0);
+				}
+			}
+		</script>
+		
+	
+	
+</head>
+
+<body >
+		<canvas id="gl-canvas" width="640" height="640" style="border:solid 1px black">
+			You need a better web browser
+		</canvas>
+</html>

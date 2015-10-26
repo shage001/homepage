@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Tangrams</title>
+    <script type="text/javascript" src="../lib/webgl-utils.js"></script>
+	<script type="text/javascript" src="../lib/MV.js"></script>
+	<script type="text/javascript" src="../lib/InitShaders.js"></script>
+
+    <script type="text/javascript" src="shage_proj3.js"></script>
+	
+	
+	
+	<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 a_Position;
+			uniform vec4 u_Color;
+			varying vec4 v_Color;
+			uniform mat4 u_Matrix;
+			void main() {
+				gl_Position = u_Matrix * a_Position;
+				v_Color = u_Color;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+			varying vec4 v_Color;
+			// varying vec4 v_Position;
+			void main() {
+				gl_FragColor = v_Color;
+			}
+		</script>
+		
+	<p>Select a shape:</p>
+	<p><select name="shape" onchange="handleMenu(this)">
+		<option value="square">Square</option>
+		<option value="cat">Cat</option>
+		<option value="rabbit">Rabbit</option>
+	</select></p>
+	
+</head>
+
+<body >
+		<canvas id="gl-canvas" width="640" height="640" style="border:solid 1px black">
+			You need a better web browser
+		</canvas>
+</html>

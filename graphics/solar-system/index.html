@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lan="en">
+
+	<head>
+		<title>Solar system</title>
+		<script type="text/javascript" src="../lib/webgl-utils.js"></script>
+		<script type="text/javascript" src="../lib/MV.js"></script>
+		<script type="text/javascript" src="../lib/InitShaders.js"></script>
+		
+		
+		<script type="text/javascript" src="shage_proj4.js"></script>
+		
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 a_Position;
+			attribute vec4 a_Color;
+			uniform mat4 u_Projection;
+			uniform mat4 u_ViewMatrix;
+			uniform mat4 u_ModelMatrix;
+			varying vec4 v_Color;
+			void main(){
+				gl_Position = u_Projection* u_ViewMatrix*u_ModelMatrix* a_Position;
+				
+				
+				v_Color = a_Color;
+			}
+		</script>
+		
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;
+			varying vec4 v_Color;
+			void main(){
+				gl_FragColor = v_Color;
+			}
+		</script>
+		
+		
+		
+	</head>
+	<body>
+		<canvas id="gl-canvas" width="640" height="640">
+			You need a better web browser
+		</canvas>
+
+		<h1>Strange Orbits</h1>
+		<p>Use the up arrow to zoom in and the down arrow to zoom out.</p>
+	</body>
+</html>
