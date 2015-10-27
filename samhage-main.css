@@ -22,11 +22,30 @@ a:hover {
 	/*color: #B82500;*/
 }
 
+/* social profile spacing - mobile first */
+.profile {
+	display: block;
+}
+
+@media only screen and (min-width: 500px) {
+	.profile {
+		display: inline-block;
+	}
+}
+
+/* header sizing - mobile first */
 h1 {
-	font-size: 3em;
+	font-size: 2em;
 	font-weight: 100;
 	margin: 0;
 	/*line-height: 1em;*/
+}
+
+@media only screen and (min-width: 800px) {
+	h1 {
+		font-size: 2.5em;
+		/*line-height: 1em;*/
+	}
 }
 
 .text-center {
@@ -34,12 +53,18 @@ h1 {
 }
 
 .name-separator {
-	width: 10%;
+	width: 25%;
 	border: 0;
 	color: #fff;
 	background-color: #fff;
 	height: 1px;
 	margin-bottom: 1em;
+}
+
+@media only screen and (min-width: 800px) {
+	.name-separator {
+		width: 10%;
+	}
 }
 
 .subtitle {
@@ -63,8 +88,21 @@ h1 {
 	display: block;
 }
 
+/* margins for about sections - mobile first */
 .about {
-	margin: 0 8em;
+	margin: 0 2em;
+}
+
+@media only screen and (min-width: 500px) {
+	.about {
+		margin: 0 10em;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	.about {
+		margin: 0 25em;
+	}
 }
 
 .container {
