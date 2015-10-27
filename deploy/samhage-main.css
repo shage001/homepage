@@ -48,6 +48,10 @@ h1 {
 	}
 }
 
+h2 {
+	margin: 1em 0 .25em 0;
+}
+
 .text-center {
 	text-align: center;
 }
@@ -137,7 +141,7 @@ h1 {
 
 .hero {
 	background-color: #555;
-	background-image: url('assets/midd-sunset-dark.jpg');
+	background-image: url('assets/midd-sunset-dark.png');
 	position: relative;
 	margin: 0;
 	padding: 3em 1em;
