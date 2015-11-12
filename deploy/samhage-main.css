@@ -198,6 +198,15 @@ h2 {
 	padding: 5em 4em;
 }
 
+.puzzle {
+	display: inline-block;
+	margin: 2em;
+}
+
+.puzzle-image {
+	max-width: 20em;
+}
+
 
 
 
