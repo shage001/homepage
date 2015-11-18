@@ -53,7 +53,7 @@ h1 {
 }
 
 h2 {
-	margin: 2em 0 .25em 0;
+	margin: 2em 1em .25em 1em;
 }
 
 .text-center {
@@ -207,19 +207,12 @@ h2 {
 	max-width: 20em;
 }
 
+.puzzle-image.large {
+	max-width: 20em;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media only screen and (min-width: 500px) {
+	.puzzle-image.large {
+		max-width: 28em;
+	}
+}
