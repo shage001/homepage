@@ -132,7 +132,6 @@ h2 {
 	text-align: center;
 }
 
-
 .photo {
 	display: inline-block;
 	max-height: 150px;
@@ -140,7 +139,13 @@ h2 {
 }
 
 .photos {
-	margin-top: 5em;
+	margin: 5em 0 0 0;
+}
+
+@media only screen and (min-width: 500px) {
+	.photos {
+		margin: 5em 5em 0 5em;
+	}
 }
 
 .project {
