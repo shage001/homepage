@@ -26,6 +26,15 @@ a:hover {
 	/*color: #B82500;*/
 }
 
+.inline {
+	color: #CC3300;
+}
+
+.inline:hover {
+	color: #CC3300;
+	text-decoration: underline;
+}
+
 /* social profile spacing - mobile first */
 .profile {
 	display: block;
