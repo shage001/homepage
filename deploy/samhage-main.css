@@ -245,6 +245,16 @@ h2 {
 	transform:scale(4,4);
 }
 
+.enlarge.left:active {
+	transform:scale(4,4);
+	transform-origin: 0 50%;
+}
+
+.enlarge.right:active {
+	transform:scale(4,4);
+	transform-origin: 100% 50%;
+}
+
 figure {
 	display: inline-block;
 	margin: 0;
