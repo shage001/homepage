@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-    	<title>Edge Detection</title>
+		<meta name="viewport" content="width=device-width"/>
+    	<title>Circle Detection</title>
 		<link rel="stylesheet" type="text/css" href="../../samhage-main.css">
 		<link rel="icon" href="../../assets/favicon.png"/>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -11,32 +12,53 @@
 	<body>
 		<h1 class="text-center section">Circle Detection</h1>
 		<h3 class="text-center">By John and Sam</h3>
+		<div class="section about text-center">
+			<p>All images use Gaussian smoothing with sigma=2 and Canny edge detection with thresholds of 5 and 10. To improve on our original method, we searched over a range of radii and smoothed the accumulator images (although discretization still proved to be a problem for us because of the ranged search; i.e. smoothing doesn't make a difference when you have ten different accumulator arrays). Our ranged search begins at a minimum radius of 10 and increases by 5-15 (image-dependent) up to the supplied radius.</p>
+		</div>
 
 		<hr class="separator text-center"/>
 
+		<!-- old chapel -->
 		<div class="photo-row section text-center">
-			<img class="method" style="max-height:400px;" src="../../assets/circles/oldchapel.png"/>
-			<img class="method" style="max-height:400px;" src="../../assets/circles/oldchapel-1-5-10-300-20.png"/>
+			<p>Min. votes: 300, Max. radius: 20</p>
+			<img class="method circle-detection-photo" src="../../assets/circles/oldchapel.png"/>
+			<img class="method circle-detection-photo" src="../../assets/circles/oldchapel-1-5-10-300-20.png"/>
 		</div>
 
+		<hr class="separator text-center"/>
+
+		<!-- billiards -->
 		<div class="photo-row section text-center">
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/billiards.jpg"/>
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/billiards-1-5-10-300-150.png"/>
+			<p>Min. votes: 300, Max. radius: 150</p>
+			<img class="method circle-detection-photo" src="../../assets/circles/billiards.jpg"/>
+			<img class="method circle-detection-photo" src="../../assets/circles/billiards-1-5-10-300-150.png"/>
 		</div>
 
+		<hr class="separator text-center"/>
+
+		<!-- coins -->
 		<div class="photo-row section text-center">
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/coins.jpg"/>
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/coins-1-5-10-500-150.png"/>
+			<p>Min. votes: 500, Max. radius: 150</p>
+			<img class="method circle-detection-photo" src="../../assets/circles/coins.jpg"/>
+			<img class="method circle-detection-photo" src="../../assets/circles/coins-1-5-10-500-150.png"/>
 		</div>
 
+		<hr class="separator text-center"/>
+
+		<!-- marbles -->
 		<div class="photo-row section text-center">
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/marbles.jpg"/>
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/marbles-1-5-10-350-75.png"/>
+			<p>Min. votes: 350, Max. radius: 75</p>
+			<img class="method circle-detection-photo" src="../../assets/circles/marbles.jpg"/>
+			<img class="method circle-detection-photo" src="../../assets/circles/marbles-1-5-10-350-75.png"/>
 		</div>
 
+		<hr class="separator text-center"/>
+
+		<!-- wasps -->
 		<div class="photo-row section text-center">
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/wasps.jpg"/>
-			<img class="method photo" style="max-height:400px;" src="../../assets/circles/wasps-1-5-10-250-150.png"/>
+			<p>Min. votes: 250, Max. radius: 150</p>
+			<img class="method circle-detection-photo" src="../../assets/circles/wasps.jpg"/>
+			<img class="method circle-detection-photo" src="../../assets/circles/wasps-1-5-10-250-150.png"/>
 		</div>
 	</body>
 </html>

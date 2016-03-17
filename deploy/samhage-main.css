@@ -65,6 +65,12 @@ h2 {
 	margin: 2em 1em .25em 1em;
 }
 
+figure {
+	display: inline-block;
+	margin: 0;
+	vertical-align: text-top;
+}
+
 .text-center {
 	text-align: center;
 }
@@ -237,6 +243,10 @@ h2 {
 	margin-bottom: 5em;
 }
 
+.circle-detection-photo {
+	max-height: 400px;
+}
+
 .method {
 	margin: 1.5em;
 }
@@ -253,10 +263,4 @@ h2 {
 .enlarge.right:active {
 	transform:scale(4,4);
 	transform-origin: 100% 50%;
-}
-
-figure {
-	display: inline-block;
-	margin: 0;
-	vertical-align: text-top;
 }
