@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width"/>
+    	<title>Panoramas</title>
+		<link rel="stylesheet" type="text/css" href="../../samhage-main.css">
+		<link rel="icon" href="../../assets/favicon.png"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
+	</head>
+	<body>
+		<h1 class="text-center section">Image Stitching</h1>
+		<h3 class="text-center">By John and Sam</h3>
+		<div class="section about text-center">
+			<p>Panoramas created through image stitching done with affine transformations. Because of the nature of the transformations, this method works well when the camera is moved in any direction, or rotated side to side (roll), but not when the photographer rotates the photo angle (yaw) or looks up and down (pitch). Using a perspective model would solve these problems, as it would allow for a homographic transformation of the images. Certain images (like the hallway) were also problematic because they either didn't present enough features, or there was feature ambiguity in multiple areas, which resulted in poor fitting.</p>
+		</div>
+
+		<hr class="separator text-center"/>
+
+		<!-- rainier -->
+		<div class="photo-row section text-center">
+			<img class="method circle-detection-photo" src="../../assets/pano/rainier-pano.jpg"/>
+			<p>Mt. Rainier</p>
+		</div>
+
+		<hr class="separator text-center"/>
+
+		<!-- gimli -->
+		<div class="photo-row section text-center">
+			<img class="method circle-detection-photo" src="../../assets/pano/gimli-pano.jpg"/>
+			<p>Gimli son of Gloin</p>
+		</div>
+
+		<hr class="separator text-center"/>
+
+		<!-- west view -->
+		<div class="photo-row section text-center">
+			<img class="method circle-detection-photo" src="../../assets/pano/west-pano.jpg"/>
+			<p>View from BiHall</p>
+		</div>
+
+		<hr class="separator text-center"/>
+
+		<!-- bihall hallway -->
+		<div class="photo-row section text-center">
+			<img class="method circle-detection-photo" src="../../assets/pano/bihall-pano.jpg"/>
+			<p>Computer Science hallway</p>
+		</div>
+		<h2></h2>
+	</body>
+</html>
