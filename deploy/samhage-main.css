@@ -273,3 +273,11 @@ figure {
 	font-family: Georgia, times, serif;
 	font-style: italic;
 }
+
+.cite {
+	font-size: .5em;
+}
+
+.youtube {
+	margin: 1em;
+}
