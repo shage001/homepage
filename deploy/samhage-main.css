@@ -268,3 +268,8 @@ figure {
 .caption {
 	font-size: .75em;
 }
+
+.math {
+	font-family: Georgia, times, serif;
+	font-style: italic;
+}
