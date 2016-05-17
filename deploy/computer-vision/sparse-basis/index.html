@@ -30,7 +30,7 @@
 		<div class="section about text-center">
 			<h2>Approach<sup><a class="cite" href="#references">[2]</a></sup></h2>
 			<ol>
-				<li align="left" style="margin-bottom:1.5em"><p>Select a set of potential basis vectors and resample them to the same size as the target images. We sampled one frame every ten seconds from the first three episodes of season one and resized them to 360x203 pixels. Each of these images was a 203x360x3 matrix (we used color video so each pixel was an RGB triple), but we converted them to vectors of 219,240 elements each. The result was a 219,240x1,049 (the number of training images) matrix <span class="math">T</span>.</p></li>
+				<li align="left" style="margin-bottom:1.5em"><p>Select a set of potential basis vectors and resample them to the same size as the target images. We sampled one frame every ten seconds from the first three episodes of season one and resized them to 360x203 pixels. Each of these images was a 203x360x3 matrix (we used color video so each pixel was an RGB triple), but we converted them to vectors of 219,240 elements each. The result was a 219,240x1,049 (the number of training images) matrix <span class="math">T</span>, where each column represented one image in its vector form.</p></li>
 
 				<li align="left" style="margin-bottom:1.5em"><p style="margin-bottom:.5em">Choose a sparse basis of <span class="math">k</span> images from the training set that will best represent the target image. Initially, we attempted to calculate the similarity between our target image and our basis images using the sum of squared differences of the pixel values. Doing this calculation on each of our 1,049 training images for every target frame, however, proved to be too time intensive. Furthermore, this approach did not mirror the target images as accurately as we had hoped, most likely due to the fact that our new set of basis images lacked the variance needed to model individual characters in the scene. Instead, the frames tended to contain a similar image color while failing to recreate specific objects. See below.</p>
 
@@ -44,7 +44,7 @@
 
 				<p style="margin-bottom:.5em">Rather than doing SSD, we decided to use the eigenvalues of the image vectors as a way to quickly find the images in our basis with the most variance. This approach allowed us to trim the basis only once, rather than for each target vector, as the variance of our basis images did not depend on the input frame.</p>
 
-				<p>This involves calculating the eigenvalues of <span class="math">T</span> 's covariance matrix. For images of our size, however, this matrix <span class="math">TT<sup>T</sup></span> would have over 10<sup>10</sup> elements, making principle component analysis computationally infeasible. Instead, we notice that the eigenvector decomposition of <span class="math">T</span> 's matrix:
+				<p>This involves calculating the eigenvalues of <span class="math">T</span> 's covariance matrix. For images of our size, however, this matrix <span class="math">TT<sup>T</sup></span> would have over 10<sup>10</sup> elements, making principle component analysis computationally infeasible. Instead, notice that the eigenvector decomposition of <span class="math">T</span> 's matrix:
 				<div class="text-center" style="margin:1em">
 					<span class="math">TT<sup>T</sup>v<sub>i</sub> = &lambda;<sub>i</sub>v<sub>i</sub></span>
 				</div>
@@ -56,7 +56,7 @@
 
 				<li align="left" style="margin-bottom:1.5em"><p>Select the best images based on descending eigenvalue to use as a sparse basis.</p></li>
 
-				<li align="left" style="margin-bottom:1.5em"><p>Perform least squares fitting to calculate the weights for each of the chosen basis images. This is done by computing the Moore-Penrose pseudoinverse of <span class="math">D</span>, the matrix of chosen basis image vectors:
+				<li align="left" style="margin-bottom:1.5em"><p>Perform least squares fitting to calculate the weights for each of the chosen basis images. This is done by computing the Moore-Penrose pseudoinverse of <span class="math">D</span>, the 219,240x<span class="math">k</span> matrix of chosen basis image vectors:
 				<div class="text-center" style="margin:1em">
 					<span class="math">D<sup>+</sup> = (D<sup>T</sup>D)<sup>-1</sup>D<sup>T</sup></span>
 				</div>
