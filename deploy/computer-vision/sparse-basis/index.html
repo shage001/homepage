@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width"/>
+		<title>GoT Basis Pursuit</title>
+		<link rel="stylesheet" type="text/css" href="../../samhage-main.css">
+		<link rel="icon" href="../../assets/favicon.png"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
+	</head>
+	<body>
+		<h1 class="text-center section">Basis Pursuit for <i>Game of Thrones</i> Season Six</h1>
+		<h3 class="text-center">Sam Hage, John Karabinos, Kevin Serrao</h3>
+
+		<hr class="separator text-center"/>
+
+		<div class="section text-center about">
+			<h2>Goal</h2>
+			<p>For our project we wanted to apply the techniques of <a class="inline" href="https://en.wikipedia.org/wiki/Basis_pursuit">basis pursuit</a> and <a class="inline" href="https://en.wikipedia.org/wiki/Sparse_approximation">sparse approximation</a> to recreate frames of video using linear combinations of other images. Specifically, our goal was to create a sparse representation of scenes from season six of HBO's award-winning fantasy drama series, <i>Game of Thrones</i>, where our basis vectors would be frames taken at regular intervals from season one of HBO's award-winning fantasy drama series, <i>Game of Thrones</i>.</p>
+		</div>
+
+		<div class="text-center section">
+			<figure>
+				<img style="max-width:30em" src="../../assets/sparse-basis/cat-basis.png"/>
+				<figcaption class="caption">Recreating headshots using a basis of cat pictures.<sup><a href="#references">[1]</a></sup></figcaption>
+			</figure>
+		</div>
+
+		<div class="section text-center about">
+			<h2>Approach</h2>
+			<ol>
+			<li align="left" style="margin-bottom:1em">Select a set of potential basis vectors and resample them to the same size as the target images. We sampled one frame every ten seconds from the first three episodes of season one and resized them to 360x203 pixels. Each of these images was a 203x360x3 matrix (we used color video so each pixel was an RGB triple), but we converted them to vectors of 219,240 elements each. The result was a 219,240x1,049 (the number of training images) matrix <i>T</i>.</li>
+
+			<li align="left">Choose a sparse basis of <i>k</i> images from the training set that will best represent the target image. Initially, we attempted to calculate the similarity between our target image and our basis images using the sum of squared differences of the pixel values. Doing this calculation on each of our 1,049 training images for every target frame, however, proved to be too time intensive. Furthermore, this approach did not mirror the target images as accurately as we had hoped, most likely due to the fact that our new set of basis images lacked the variance needed to model individual characters in the scene. Instead, the frames tended to contain a similar image color while failing to recreate specific objects. Rather than doing SSD, we decided to use the eigenvalues of the image vectors as a way to quickly find the images in our basis with the most variance. This approach allowed us to trim the basis only once, rather than for each target vector, as the variance of our basis images did not depend on the input frame.
+
+				 calculate the eigenvalues of <i>T</i>'s covariance matrix in order to select the best image vectors.</li>
+
+			</ol>
+		</div>
+
+		<h3 class="section text-center"><i>"When you play the game of thrones, you find a sparse basis of linearly independent eigenvectors, or you die."</i> -Cersei Lannister</h3>
+
+		<h2></h2>
+		<div class="section text-center" id="references">
+			<h2>References</h2>
+		</div>
+	</body>
+</html>

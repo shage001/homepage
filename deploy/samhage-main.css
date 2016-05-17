@@ -264,3 +264,7 @@ figure {
 	transform:scale(4,4);
 	transform-origin: 100% 50%;
 }
+
+.caption {
+	font-size: .75em;
+}
