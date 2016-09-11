@@ -184,37 +184,62 @@ figure {
 }
 
 .hero.lennon {
-	background-image: url('assets/lennon.png');
+	background-image: url('assets/hero/lennon.png');
 	padding: 5em 10em;
 }
 
 .hero.axes {
-	background-image: url('assets/axes.png');
+	background-image: url('assets/hero/axes.png');
 	padding: 5em 5em;
 }
 
 .hero.tibet {
-	background-image: url('assets/tibet.png');
+	background-image: url('assets/hero/tibet.png');
 	padding: 5em 10em;
 }
 
 .hero.team {
-	background-image: url('assets/team.png');
+	background-image: url('assets/hero/team.png');
 	padding: 5em 10em;
 }
 
 .hero.everest {
-	background-image: url('assets/everest.png');
+	background-image: url('assets/hero/everest.png');
 	padding: 5em 8em;
 }
 
 .hero.emerald-lake {
-	background-image: url('assets/emerald-lake.png');
+	background-image: url('assets/hero/emerald-lake.png');
 	padding: 5em 10em;
 }
 
 .hero.alex {
-	background-image: url('assets/alex.png');
+	background-image: url('assets/hero/alex.png');
+	padding: 5em 4em;
+}
+
+.hero.fiona {
+	background-image: url('assets/hero/fiona.png');
+	padding: 5em 4em;
+}
+
+.hero.kayak {
+	background-image: url('assets/hero/kayak.png');
+	padding: 5em 8em;
+}
+
+.hero.mountain-norway {
+	background-image: url('assets/hero/mountain-norway.png');
+	padding: 5em 10em;
+}
+
+.hero.sunrise {
+	background-image: url('assets/hero/sunrise.png');
+	padding: 5em 6em;
+}
+
+.hero.norsk-hage {
+	background-image: url('assets/hero/norsk-hage.png');
 	padding: 5em 4em;
 }
 
