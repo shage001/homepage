@@ -249,6 +249,16 @@ figure {
 	padding: 5em 4em;
 }
 
+.hero.white-mountains {
+	background-image: url('assets/hero/white-mountains.png');
+	padding: 5em 8em;
+}
+
+.hero.phonepal {
+	background-image: url('assets/hero/phonepal.png');
+	padding: 5em 10em;
+}
+
 .puzzle {
 	display: inline-block;
 	margin: 2em;
